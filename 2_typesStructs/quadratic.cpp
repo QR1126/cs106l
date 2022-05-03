@@ -24,7 +24,9 @@ int main(){
 	cin >> a >> b >> c;
 	//get roots if they exist
 	//some call to quadratic function!
-	
+
+
+
 	
 
 	return 0;
