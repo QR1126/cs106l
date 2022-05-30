@@ -8,6 +8,7 @@ using std::string;
 //read numbers from a file
 void readNumbers() {
     // Create our ifstream and make it open the file
+    // Receives a string from the stream and converts it to data
     std::ifstream input("res/numbers.txt");
 
     // This will store the values as we get them form the stream
