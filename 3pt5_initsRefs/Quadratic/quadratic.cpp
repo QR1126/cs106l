@@ -28,7 +28,14 @@ int main(){
 	cout << "Give me 3 coefficients: " << endl;
 	cin >> a >> b >> c;
 	//get roots if they exist- use structured binding!
-	
+	auto res = quadratic(a, b, c);
+	bool flag = res.first;
+	if (flag) {
+		auto [root1, root2] = res.second;
+		cout << "roots are " << root1 << " " << root2 << endl;
+	} else {
+		cout << "No solutions" << endl;
+	}
 
 	return 0;
 }

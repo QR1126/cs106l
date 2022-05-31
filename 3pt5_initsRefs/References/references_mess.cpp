@@ -77,14 +77,14 @@ void shift(vector<std::pair<int, int>>& nums) {
 }
 
 int main(){
-	// vector<std::pair<int, int>> nums{{1, 2}};
-	// cout << "nums starts as: ";
-	// print_vector(nums);
-	// shift(nums);
+	vector<std::pair<int, int>> nums{{1, 2}};
+	cout << "nums starts as: ";
+	print_vector(nums);
+	shift(nums);
 
-	// poll("what does nums look like now?");
+	poll("what does nums look like now?");
 
-	// print_vector(nums);
+	print_vector(nums);
 	ref_var_example();
 
 	
