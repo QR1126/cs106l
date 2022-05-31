@@ -15,7 +15,7 @@ void poll(string question){
 //utility function to print a vector
 void print_vector(vector<int> vec){
 	cout << "{ ";
-	for(int i = 0; i < vec.size() - 1; i++){
+	for(size_t i = 0; i < vec.size() - 1; i++){
 		cout << vec[i] << ", ";
 	}
 

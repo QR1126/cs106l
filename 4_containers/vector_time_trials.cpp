@@ -17,7 +17,10 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
 
     // Adding numElems elements to the end of the vector
-    
+    for (int i = 0; i < numElems; i++) {
+        vec.push_back(std::to_string(i));
+    }
+
     // stop timer and output results
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -31,6 +34,9 @@ int main() {
     start = std::chrono::high_resolution_clock::now();
 
     // Adding numElems elements to beginning of vector
+    for (int i = 0; i < numElems; i++) {
+        vec.insert(vec.begin(), std::to_string(i));
+    }
 
     // stop timer and output results
     end = std::chrono::high_resolution_clock::now();
@@ -45,6 +51,9 @@ int main() {
     start = std::chrono::high_resolution_clock::now();
 
     // accessing all of the elements
+    for (int i = 0; i < numElems; i++) {
+        vec[i];
+    }
 
     // stop timer and output results
     end = std::chrono::high_resolution_clock::now();
