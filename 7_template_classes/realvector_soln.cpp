@@ -1,4 +1,4 @@
-// #include "realvector.h"
+#include "realvector_soln.h"
 //constructors
 template<class valueType>
 RealVector<valueType>::RealVector()

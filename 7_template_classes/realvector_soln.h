@@ -46,8 +46,8 @@ private:
 };
 
 
-#include "realvector.cpp"
-// #include "realvector.h"
+//#include "realvector.cpp"
+#include "realvector_soln.h"
 
 #endif // RealVector_H
 
