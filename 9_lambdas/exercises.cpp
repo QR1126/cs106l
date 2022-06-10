@@ -15,11 +15,11 @@ int countIfExercise1() {
     int LIMIT = 5;
 
     // START OF STUDENT CODE
-    auto lamdba = [] () {};
+    auto isGreater = [LIMIT] (int n) {return n > LIMIT;};
     // END OF STUDENT CODE
 
     std::vector<int> nums = {3, 5, 10, 6, 8, 9};
-    return std::count_if(nums.begin(), nums.end(), lambda);
+    return std::count_if(nums.begin(), nums.end(), isGreater);
 }
 
 /*********************************************
@@ -31,7 +31,12 @@ int countIfExercise1() {
  ********************************************/
 int countIfExercise2(std::vector<int>& oddNumbers) {
     // START OF STUDENT CODE
-    auto lambda = [] () { };
+    auto lambda = [&oddNumbers] (int n) {
+        if (n & 1) {
+            oddNumbers.push_back(n);
+        }
+        return n & 1;
+    };
     // END OF STUDENT CODE
 
     std::vector<int> nums = {3, 5, 10, 6, 8, 9};
@@ -45,7 +50,9 @@ int countIfExercise2(std::vector<int>& oddNumbers) {
  ********************************************/
 int findExercise1() {
     // START OF STUDENT CODE
-    auto lambda = [](){ };
+    auto lambda = [](int n) {
+        return n & 1 && n % 3;
+    };
     // END OF STUDENT CODE
 
     std::vector<int> nums = {3, 9, 18, 12, 5, 7};
@@ -64,7 +71,7 @@ int findExercise1() {
  ********************************************/
 std::vector<int> sortExercise1() {
     // START OF STUDENT CODE
-    auto lambda = [](int i, int j) { }; // instead of return i < j;
+    auto lambda = [](int i, int j) { return i > j; }; // instead of return i < j;
     // auto lambda = [](Student s1, Student s2) { return s1.age < s2.age; };
     // END OF STUDENT CODE
 
