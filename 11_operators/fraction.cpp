@@ -39,10 +39,24 @@ Fraction Fraction::operator - (const Fraction& rhs) const {
 
 // non-member functions:
 // Implementing the += operation in a non-member function
+Fraction& operator+= (Fraction& lhs, const Fraction& rhs) {
+    lhs.num = lhs.denom * rhs.num + lhs.num * rhs.num;
+    lhs.denom *= rhs.denom;
+    lhs.reduce();
+    return lhs;
+}
 
 // Implementing the * operation in a non-member function
+bool operator< (const double & lhs, const Fraction& rhs) {
+    double frac = rhs.num / rhs.denom;
+    return lhs < frac;
+}
 
 // Overloading << to allow for passing Fractions into streams.
+std::ostream& operator << (std::ostream& out, const Fraction& target) {
+    out << target.num << "/" << target.denom;
+    return out;
+}
 
 int main() {
 
