@@ -21,27 +21,27 @@ HashMap<K, M, H>::~HashMap() {
 }
 
 template <typename K, typename M, typename H>
-inline size_t HashMap<K, M, H>::size() {
+inline size_t HashMap<K, M, H>::size() const noexcept {
     return _size;
 }
 
 template <typename K, typename M, typename H>
-inline bool HashMap<K, M, H>::empty() {
+inline bool HashMap<K, M, H>::empty() const noexcept {
     return size() == 0;
 }
 
 template <typename K, typename M, typename H>
-inline float HashMap<K, M, H>::load_factor() {
+inline float HashMap<K, M, H>::load_factor() const noexcept {
     return static_cast<float>(size())/bucket_count();
 };
 
 template <typename K, typename M, typename H>
-inline size_t HashMap<K, M, H>::bucket_count() const{
+inline size_t HashMap<K, M, H>::bucket_count() const noexcept{
     return _buckets_array.size();
 };
 
 template <typename K, typename M, typename H>
-M& HashMap<K, M, H>::at(const K& key) {
+M& HashMap<K, M, H>::at(const K& key) const {
     auto [prev, node_found] = find_node(key);
             if (node_found == nullptr) {
         throw std::out_of_range("HashMap<K, M, H>::at: key not found");
@@ -50,12 +50,12 @@ M& HashMap<K, M, H>::at(const K& key) {
 }
 
 template <typename K, typename M, typename H>
-bool HashMap<K, M, H>::contains(const K& key) {
+bool HashMap<K, M, H>::contains(const K& key) const noexcept {
     return find_node(key).second != nullptr;
 }
 
 template <typename K, typename M, typename H>
-void HashMap<K, M, H>::clear() {
+void HashMap<K, M, H>::clear() noexcept {
     for (auto& curr : _buckets_array) {
         while (curr != nullptr) {
             curr = curr->next;
@@ -103,7 +103,7 @@ typename HashMap<K, M, H>::node_pair HashMap<K, M, H>::find_node(const K& key) c
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::begin() {
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::begin() noexcept{
     size_t index = first_not_empty_bucket();
     if (index == bucket_count()) {
         return end();
@@ -112,7 +112,7 @@ typename HashMap<K, M, H>::iterator HashMap<K, M, H>::begin() {
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::begin() const {
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::begin() const noexcept{
     // This is called the static_cast/const_cast trick, which allows us to reuse
     // the non-const version of find to implement the const version.
     // The idea is to cast this so it's pointing to a non-const HashMap, which
@@ -122,8 +122,14 @@ typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::begin() const {
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end() {
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end() noexcept{
     return make_iterator(nullptr);
+}
+
+template <typename K, typename M, typename H>
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::end() const noexcept {
+    // see static_cast/const_cast trick explained in find().
+    return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->end());
 }
 
 template <typename K, typename M, typename H>
@@ -164,7 +170,7 @@ typename HashMap<K, M, H>::iterator HashMap<K, M, H>::erase(typename HashMap<K, 
 }
 
 template <typename K, typename M, typename H>
-    void HashMap<K, M, H>::debug() {
+    void HashMap<K, M, H>::debug() const {
     std::cout << std::setw(30) << std::setfill('-') << '\n' << std::setfill(' ')
           << "Printing debug information for your HashMap implementation\n"
           << "Size: " << size() << std::setw(15) << std::right
@@ -247,5 +253,52 @@ std::ostream& operator<<(std::ostream& os, const HashMap<K, M, H>& rhs) {
 }
 
 /* Begin Milestone 2: Special Member Functions */
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(const HashMap& rhs) :
+    _size{rhs._size}, 
+    _hash_function{rhs._hash_function}
+{
+    for (const auto [key, val] : rhs) {
+        insert({key, val});
+    }
+}
 
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator= (const HashMap& rhs) {
+    if (&rhs == this) return *this;
+    clear();
+    for (const auto [key, val] : rhs) {
+        insert({key, val});
+    }
+    return *this;
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(HashMap&& rhs) :
+    _size{std::move(rhs._size)},
+    _hash_function{std::move(rhs._hash_function)},
+    _buckets_array{rhs.bucket_count(), nullptr} 
+{
+    for (size_t i = 0; i < rhs.bucket_count(); i++) {
+        _buckets_array[i] = std::move(rhs._buckets_array[i]);
+        rhs._buckets_array[i] = nullptr;
+    }
+    rhs._size = 0;
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator=(HashMap&& rhs) {
+    if (this != &rhs) {
+        clear();
+        _size = std::move(rhs._size);
+        _hash_function = std::move(rhs._hash_function);
+        _buckets_array.resize(rhs.bucket_count());
+        for (size_t i = 0; i < rhs.bucket_count(); i++) {
+            _buckets_array[i] = std::move(rhs._buckets_array[i]);
+            rhs._buckets_array[i] = nullptr;
+        }
+        rhs._size = 0;
+    }
+    return *this;
+}
 /* end student code */

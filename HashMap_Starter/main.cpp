@@ -2,8 +2,8 @@
 #include <set>
 using namespace std;
 //UNCOMMENT THESE FOR MILESTONE 2
-// #include "tests.cpp"
-// #include "test_settings.cpp"
+#include "tests.cpp"
+#include "test_settings.cpp"
 #include <iostream>
 
 //declaring functions now so we can use them befpre we implement them!
